@@ -4,7 +4,7 @@
 
 它依赖 3 层：
 
-1. `doubao_relay.py`
+1. `doubao_web_to_api.py`
 2. `opencli doubao` 或 `opencli doubao-app`
 3. 豆包网页或桌面版自身页面结构
 
@@ -39,8 +39,8 @@ opencli doubao-app status -f json
 ### 第三步：看 skill 脚本是不是好的
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "你好"
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "你好"
 ```
 
 如果 OpenCLI 本身正常，但脚本报错，再修脚本。
@@ -50,7 +50,7 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "你好"
 ### 1. OpenCLI 命令变了
 
 如果 OpenCLI 后续改了命令格式，要改：
-- `scripts/doubao_relay.py`
+- `scripts/doubao_web_to_api.py`
 
 重点看这里：
 - `ADAPTERS`
@@ -73,7 +73,7 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "你好"
 ### 4. 本地状态文件脏了
 
 状态文件：
-- `~/.openclaw/state/doubao-chat-relay.json`
+- `~/.doubao-web-to-api/state.json`
 
 如果怀疑记录错了，可以删掉后重试。
 
@@ -82,11 +82,11 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "你好"
 每次改完后，至少跑这 5 条：
 
 ```bash
-python3 -m py_compile skills/doubao-chat-relay/scripts/doubao_relay.py
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py new
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "你好"
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py read
+python3 -m py_compile skills/doubao-web-to-api/scripts/doubao_web_to_api.py
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py new
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "你好"
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py read
 ```
 
 ## 五、后续扩展建议
@@ -117,4 +117,3 @@ skills/<skill-name>/
 并且同步更新：
 - `skills/catalog.json`
 - 仓库首页 `README.md`
-

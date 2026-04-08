@@ -11,8 +11,10 @@ from pathlib import Path
 from typing import Any
 
 
-STATE_FILE = Path.home() / ".openclaw" / "state" / "doubao-chat-relay.json"
-DEFAULT_TIMEOUT = int(os.environ.get("DOUBAO_RELAY_TIMEOUT", "180"))
+STATE_FILE = Path.home() / ".doubao-web-to-api" / "state.json"
+DEFAULT_TIMEOUT = int(
+    os.environ.get("DOUBAO_WEB_TO_API_TIMEOUT", os.environ.get("DOUBAO_RELAY_TIMEOUT", "180"))
+)
 
 ADAPTERS = {
     "web": {"cli_name": "doubao", "kind": "web"},
@@ -200,10 +202,14 @@ def run_opencli_action(adapter: str, action: str, message: str | None, timeout: 
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Doubao chat relay via OpenCLI")
+    parser = argparse.ArgumentParser(description="Doubao Web 2 API via OpenCLI")
     parser.add_argument("action", choices=["login-check", "status", "new", "reset", "ask", "read", "last"])
     parser.add_argument("message", nargs="?", default=None)
-    parser.add_argument("--adapter", choices=["auto", "web", "app"], default=os.environ.get("DOUBAO_RELAY_TARGET", "auto"))
+    parser.add_argument(
+        "--adapter",
+        choices=["auto", "web", "app"],
+        default=os.environ.get("DOUBAO_WEB_TO_API_TARGET", os.environ.get("DOUBAO_RELAY_TARGET", "auto")),
+    )
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT)
     return parser
 

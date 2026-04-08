@@ -1,12 +1,12 @@
-# 豆包对话中继
+# Doubao Web 2 API
 
 作者：**小马AI**
 
-让 OpenClaw 通过 **OpenCLI** 调用豆包网页或豆包桌面版，直接在命令行里发起对话、创建新会话、读取最新回复。
+把已登录的豆包网页版变成统一的命令接口，方便本机 Agent 直接发起对话、创建新会话、读取最新回复。网页版不可用时，可回退到豆包桌面版。
 
 适合：
 - 已经在本机登录豆包
-- 想让 OpenClaw 多一个可调用的大模型通道
+- 想让能执行本地命令的 Agent 直接调用豆包
 - 需要同时兼容 `Windows` 和 `macOS`
 
 不适合：
@@ -43,26 +43,26 @@
 
 详细安装步骤见：
 
-- [安装与接通](skills/doubao-chat-relay/references/setup.md)
+- [安装与接通](skills/doubao-web-to-api/references/setup.md)
 
 ## 快速开始
 
 ### macOS
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py new
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py read
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py new
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "帮我总结这段内容"
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py read
 ```
 
 ### Windows
 
 ```powershell
-python skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python skills/doubao-chat-relay/scripts/doubao_relay.py new
-python skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
-python skills/doubao-chat-relay/scripts/doubao_relay.py read
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py new
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "帮我总结这段内容"
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py read
 ```
 
 ## 参数说明
@@ -83,7 +83,7 @@ python skills/doubao-chat-relay/scripts/doubao_relay.py read
 示例：
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案" --adapter web --timeout 300
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "分析这段文案" --adapter web --timeout 300
 ```
 
 ## 返回结果
@@ -122,7 +122,7 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案
 
 状态文件位置：
 
-- `~/.openclaw/state/doubao-chat-relay.json`
+- `~/.doubao-web-to-api/state.json`
 
 ## 常见问题
 
@@ -148,7 +148,7 @@ opencli list
 把超时调大：
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "问题" --timeout 300
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "问题" --timeout 300
 ```
 
 ### 4. 出现验证码或风控
@@ -158,14 +158,14 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "问题" --timeout 
 ## 仓库内容
 
 ```text
-xiaomai-ai-skills/
+doubao-web-to-api/
 ├── README.md
 └── skills/
     ├── catalog.json
-    └── doubao-chat-relay/
+    └── doubao-web-to-api/
         ├── SKILL.md
         ├── scripts/
-        │   └── doubao_relay.py
+        │   └── doubao_web_to_api.py
         └── references/
             ├── setup.md
             └── maintenance.md
@@ -173,9 +173,9 @@ xiaomai-ai-skills/
 
 ## 相关文件
 
-- [SKILL.md](skills/doubao-chat-relay/SKILL.md)
-- [安装与接通](skills/doubao-chat-relay/references/setup.md)
-- [维护说明](skills/doubao-chat-relay/references/maintenance.md)
+- [SKILL.md](skills/doubao-web-to-api/SKILL.md)
+- [安装与接通](skills/doubao-web-to-api/references/setup.md)
+- [维护说明](skills/doubao-web-to-api/references/maintenance.md)
 - [Skill 清单](skills/catalog.json)
 
 ## 后续新增 Skill

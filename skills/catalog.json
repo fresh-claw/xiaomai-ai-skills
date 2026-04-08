@@ -1,15 +1,14 @@
 [
   {
-    "name": "doubao-chat-relay",
-    "title": "豆包对话中继",
+    "name": "doubao-web-to-api",
+    "title": "Doubao Web 2 API",
     "author": "小马AI",
     "status": "active",
     "platforms": [
       "Windows",
       "macOS"
     ],
-    "entry": "skills/doubao-chat-relay/SKILL.md",
-    "summary": "通过 OpenCLI 连接豆包网页或桌面版，让 OpenClaw 能发起文本问答并读取回复。"
+    "entry": "skills/doubao-web-to-api/SKILL.md",
+    "summary": "通过 OpenCLI 把豆包网页版变成可调用的 JSON 命令接口，必要时回退到桌面版。"
   }
 ]
-

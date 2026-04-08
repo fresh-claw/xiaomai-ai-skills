@@ -1,11 +1,11 @@
 ---
-name: doubao-chat-relay
-description: "Use when OpenClaw needs to talk to Doubao through OpenCLI on Windows or macOS. Supports login-check, new, ask, read, and reset. Best for internal text chat workflows, not for high-stability production APIs."
+name: doubao-web-to-api
+description: "Use when Codex or another local agent needs to talk to Doubao through OpenCLI on Windows or macOS. Exposes Doubao Web as a JSON-returning command interface with login-check, new, ask, read, and reset, and falls back to doubao-app when needed."
 ---
 
-# doubao-chat-relay
+# doubao-web-to-api
 
-通过 OpenCLI 调用豆包网页或桌面版，给 OpenClaw 增加一个可用的文本问答通道。
+通过 OpenCLI 把豆包网页版变成统一的命令接口，必要时回退到桌面版，让本机 Agent 可以直接发起文本问答并读取回复。
 
 适合：
 - 本机已登录豆包
@@ -37,21 +37,21 @@ description: "Use when OpenClaw needs to talk to Doubao through OpenCLI on Windo
 ### macOS
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py new
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py read
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py reset
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py new
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "帮我总结这段内容"
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py read
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py reset
 ```
 
 ### Windows
 
 ```powershell
-python skills/doubao-chat-relay/scripts/doubao_relay.py login-check
-python skills/doubao-chat-relay/scripts/doubao_relay.py new
-python skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
-python skills/doubao-chat-relay/scripts/doubao_relay.py read
-python skills/doubao-chat-relay/scripts/doubao_relay.py reset
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py new
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "帮我总结这段内容"
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py read
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py reset
 ```
 
 ## 参数
@@ -68,7 +68,7 @@ python skills/doubao-chat-relay/scripts/doubao_relay.py reset
 示例：
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案" --adapter web --timeout 300
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "分析这段文案" --adapter web --timeout 300
 ```
 
 ## 输出
@@ -109,7 +109,7 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案
 4. 下次优先复用上一次成功的适配器
 
 状态文件位置：
-- `~/.openclaw/state/doubao-chat-relay.json`
+- `~/.doubao-web-to-api/state.json`
 
 ## 什么时候该停下
 

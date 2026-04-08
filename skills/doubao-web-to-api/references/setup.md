@@ -2,7 +2,7 @@
 
 ## 目标
 
-把 `doubao-chat-relay` 在 `Windows` 和 `macOS` 上接通。
+把 `doubao-web-to-api` 在 `Windows` 和 `macOS` 上接通。
 
 ## 一、安装 OpenCLI
 
@@ -39,13 +39,13 @@ opencli doubao status -f json
 如果返回成功，再执行：
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
 ```
 
 Windows 则用：
 
 ```powershell
-python skills/doubao-chat-relay/scripts/doubao_relay.py login-check
+python skills/doubao-web-to-api/scripts/doubao_web_to_api.py login-check
 ```
 
 ## 三、网页版不稳时改用桌面版
@@ -114,10 +114,9 @@ opencli list
 加长超时：
 
 ```bash
-python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "问题" --timeout 300
+python3 skills/doubao-web-to-api/scripts/doubao_web_to_api.py ask "问题" --timeout 300
 ```
 
 ### 5. 出现验证码或风控
 
 直接人工处理，不要继续自动化。
-
