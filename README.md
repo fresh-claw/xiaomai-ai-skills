@@ -1,20 +1,165 @@
-# 小马AI Skills
-
-这是一个按 skill 方式组织的仓库。
+# 豆包对话中继
 
 作者：**小马AI**
 
-目标：
-- 统一管理可复用的 skill
-- 每个 skill 独立放在 `skills/<skill-name>/`
-- 让后续新增 skill 时，目录、说明、维护方式都保持一致
+让 OpenClaw 通过 **OpenCLI** 调用豆包网页或豆包桌面版，直接在命令行里发起对话、创建新会话、读取最新回复。
 
-## 目录结构
+适合：
+- 已经在本机登录豆包
+- 想让 OpenClaw 多一个可调用的大模型通道
+- 需要同时兼容 `Windows` 和 `macOS`
+
+不适合：
+- 高并发批量任务
+- 强依赖稳定接口的生产链路
+- 自动绕过验证码、风控或登录限制
+
+## 能做什么
+
+- 检查豆包是否已登录并可调用
+- 新建会话
+- 发送问题并读取完整回复
+- 在网页版和桌面版之间自动切换
+- 统一输出 JSON，方便继续封装
+
+## 当前支持
+
+- `login-check`
+- `new`
+- `ask`
+- `read`
+- `reset`
+
+第一版只做文本问答，不包含文件上传、图片理解和复杂会话管理。
+
+## 运行前准备
+
+必须满足这 4 个条件：
+
+1. 已安装 `opencli`
+2. 已接通 `opencli doubao` 或 `opencli doubao-app`
+3. 豆包已手动登录
+4. 本机可运行 Python
+
+详细安装步骤见：
+
+- [安装与接通](skills/doubao-chat-relay/references/setup.md)
+
+## 快速开始
+
+### macOS
+
+```bash
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py login-check
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py new
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py read
+```
+
+### Windows
+
+```powershell
+python skills/doubao-chat-relay/scripts/doubao_relay.py login-check
+python skills/doubao-chat-relay/scripts/doubao_relay.py new
+python skills/doubao-chat-relay/scripts/doubao_relay.py ask "帮我总结这段内容"
+python skills/doubao-chat-relay/scripts/doubao_relay.py read
+```
+
+## 参数说明
+
+### `--adapter`
+
+- `auto`：先试网页版，再试桌面版
+- `web`：只用 `opencli doubao`
+- `app`：只用 `opencli doubao-app`
+
+默认值：`auto`
+
+### `--timeout`
+
+等待超时时间，默认 `180` 秒。  
+如果问题长、回复慢，可以调大。
+
+示例：
+
+```bash
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案" --adapter web --timeout 300
+```
+
+## 返回结果
+
+所有命令统一返回 JSON。
+
+成功示例：
+
+```json
+{
+  "ok": true,
+  "adapter": "web",
+  "adapter_kind": "web",
+  "action": "ask",
+  "result": {},
+  "answer": "这里是豆包回复",
+  "command": ["opencli", "doubao", "ask", "问题", "-f", "json"]
+}
+```
+
+失败示例：
+
+```json
+{
+  "ok": false,
+  "error": "opencli_not_found",
+  "message": "未找到 opencli，请先安装并加入 PATH。",
+  "action": "login-check"
+}
+```
+
+## 工作方式
+
+默认会先尝试豆包网页版；如果失败，再尝试豆包桌面版。  
+最近一次成功的适配器会被记录下来，后续优先复用。
+
+状态文件位置：
+
+- `~/.openclaw/state/doubao-chat-relay.json`
+
+## 常见问题
+
+### 1. 找不到 `opencli`
+
+先执行：
+
+```bash
+opencli list
+```
+
+如果失败，说明 `opencli` 没装好，或者没有加入 PATH。
+
+### 2. `login-check` 失败
+
+优先检查：
+- 豆包是否已登录
+- OpenCLI 扩展是否连上
+- 当前浏览器或桌面版是否就是 OpenCLI 使用的目标
+
+### 3. `ask` 超时
+
+把超时调大：
+
+```bash
+python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "问题" --timeout 300
+```
+
+### 4. 出现验证码或风控
+
+不要继续自动化，直接人工处理。
+
+## 仓库内容
 
 ```text
 xiaomai-ai-skills/
 ├── README.md
-├── .gitignore
 └── skills/
     ├── catalog.json
     └── doubao-chat-relay/
@@ -26,58 +171,14 @@ xiaomai-ai-skills/
             └── maintenance.md
 ```
 
-## 当前 Skills
+## 相关文件
 
-| Skill | 作用 | 状态 |
-|------|------|------|
-| `doubao-chat-relay` | 让 OpenClaw 通过 OpenCLI 调豆包网页或桌面版做文本问答 | 可用 |
+- [SKILL.md](skills/doubao-chat-relay/SKILL.md)
+- [安装与接通](skills/doubao-chat-relay/references/setup.md)
+- [维护说明](skills/doubao-chat-relay/references/maintenance.md)
+- [Skill 清单](skills/catalog.json)
 
-## 当前 Skill 清单
+## 后续新增 Skill
 
-详见：
-
-- [skills/catalog.json](skills/catalog.json)
-
-## doubao-chat-relay
-
-用途：
-- 让 OpenClaw 具备和豆包对话的能力
-- 优先复用 OpenCLI，而不是自己重写整套网页自动化
-- 兼容 `Windows` 和 `macOS`
-
-支持命令：
-- `login-check`
-- `new`
-- `ask`
-- `read`
-- `reset`
-
-详细说明：
-- [skills/doubao-chat-relay/SKILL.md](skills/doubao-chat-relay/SKILL.md)
-- [skills/doubao-chat-relay/references/setup.md](skills/doubao-chat-relay/references/setup.md)
-- [skills/doubao-chat-relay/references/maintenance.md](skills/doubao-chat-relay/references/maintenance.md)
-
-## 后续新增 Skill 的放法
-
-每个新 skill 都按这个结构新增：
-
-```text
-skills/<skill-name>/
-├── SKILL.md
-├── scripts/
-└── references/
-```
-
-新增后要做 4 件事：
-1. 更新 `skills/catalog.json`
-2. 在仓库首页补一条目录
-3. 把安装、使用、维护写完整
-4. 自检脚本能不能单独运行
-
-## 维护原则
-
-- `SKILL.md` 负责告诉模型何时使用、如何调用
-- `references/` 放详细说明和维护信息
-- `scripts/` 放稳定可执行的脚本
-- 不把个人凭证、登录态、Cookie 提交进仓库
-- 不把临时调试文件混进正式 skill
+后续会继续按同样方式管理新的 skill。  
+每个 skill 单独放在 `skills/<skill-name>/`，并统一写安装、使用、维护文档。

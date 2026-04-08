@@ -5,35 +5,21 @@ description: "Use when OpenClaw needs to talk to Doubao through OpenCLI on Windo
 
 # doubao-chat-relay
 
-作者：**小马AI**
-
-这个 skill 的作用是：  
-让 OpenClaw 通过 OpenCLI 调用豆包，而不是直接接豆包官方 API。
+通过 OpenCLI 调用豆包网页或桌面版，给 OpenClaw 增加一个可用的文本问答通道。
 
 适合：
-- 要让 OpenClaw 和豆包对话
-- 要复用已经登录好的豆包网页或豆包桌面版
-- 要兼容 `Windows` 和 `macOS`
+- 本机已登录豆包
+- 需要兼容 `Windows` 和 `macOS`
+- 希望以命令行方式发起问答并读取回复
 
-不适合：
-- 高并发批量调用
-- 强依赖稳定接口的生产链路
-- 需要自动绕过验证码、风控或登录校验
-
-## 第一版能力
-
-当前只支持文本问答：
+当前范围：
 - `login-check`
 - `new`
 - `ask`
 - `read`
 - `reset`
 
-当前不做：
-- 文件上传
-- 图片理解
-- 多会话管理
-- 自动登录
+第一版只做文本问答，不处理文件上传、图片理解和复杂会话管理。
 
 ## 依赖
 
@@ -134,7 +120,7 @@ python3 skills/doubao-chat-relay/scripts/doubao_relay.py ask "分析这段文案
 - 页面结构明显变化
 - OpenCLI 适配器失效
 
-这时应直接提示人工处理。
+这时应直接停止，并提示人工处理。
 
 ## 维护入口
 
